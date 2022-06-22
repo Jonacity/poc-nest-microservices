@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Profile } from './interface.profile';
+import { ProfileInterface } from './interface.profile';
+import { InjectRepository } from '@nestjs/typeorm';
+import Profile from './profile.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AppService {
+  constructor(
+    @InjectRepository(Profile)
+    private profilesRepository: Repository<ProfileInterface>,
+  ) {}
+
   getHello(): string {
     return 'Hello World!!';
   }
@@ -16,7 +24,14 @@ export class AppService {
     { id: 2, name: 'John' },
     { id: 3, name: 'Peter' },
   ];
-  getProfiles(): Profile[] {
+  getProfiles(): ProfileInterface[] {
     return this.profiles;
+  }
+
+  async createProfile(): Promise<ProfileInterface> {
+    const profileData = { name: 'PS' };
+    const newProfile = await this.profilesRepository.create(profileData);
+    await this.profilesRepository.save(newProfile);
+    return newProfile;
   }
 }

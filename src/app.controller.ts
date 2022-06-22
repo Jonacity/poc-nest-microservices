@@ -21,12 +21,15 @@ export class AppController {
     return this.appService.getProfiles();
   }
 
+  @Get('/create')
+  createProfile(): Observable<any> {
+    return this.appService.createProfile();
+  }
   // @Post('/create')
-  // @MessagePattern({ role: 'item', cmd: 'create' })
-  // createItem(_itemDto) {
-  //   // return this.appService.createItem(itemDto);
-  //   return { a: 'a', b: 'b' };
+  // createProfile(@Param('name') name: string): Observable<any> {
+  //   return this.appService.createProfile(name);
   // }
+
   // @MessagePattern({ role: 'item', cmd: 'get-by-id' })
   // getItemById(id: number) {
   //   return this.appService.getItemById(id);

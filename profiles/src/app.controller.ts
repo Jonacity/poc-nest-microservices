@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
-import { Profile } from './interface.profile';
+import { ProfileInterface } from './interface.profile';
 
 @Controller()
 export class AppController {
@@ -18,7 +18,12 @@ export class AppController {
   }
 
   @MessagePattern({ cmd: 'get_profiles' })
-  getProfiles(): Profile[] {
+  getProfiles(): ProfileInterface[] {
     return this.appService.getProfiles();
+  }
+
+  @MessagePattern({ cmd: 'create_profile' })
+  async createProfile(): Promise<ProfileInterface> {
+    return this.appService.createProfile();
   }
 }
