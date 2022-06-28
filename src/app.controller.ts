@@ -1,37 +1,34 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Req, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs';
+import {
+  ProfileInterface,
+  ProfileParams,
+} from '../profiles/src/interface.profile';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): Observable<string> {
-    return this.appService.getHello();
+  getHome(): Observable<string> {
+    return this.appService.getHome();
   }
 
-  @Get('/sum')
-  accumulate(): Observable<number> {
-    return this.appService.accumulate();
+  @Post('/create')
+  createProfile(
+    @Body() profileParams: ProfileParams,
+  ): Observable<ProfileInterface> {
+    return this.appService.createProfile(profileParams);
+  }
+
+  @Get('/profiles/:id')
+  getProfile(@Param('id') id: number): Observable<ProfileInterface> {
+    return this.appService.getProfile(id);
   }
 
   @Get('/profiles')
-  getProfiles(): Observable<any> {
+  getProfiles(): Observable<ProfileInterface[]> {
     return this.appService.getProfiles();
   }
-
-  @Get('/create')
-  createProfile(): Observable<any> {
-    return this.appService.createProfile();
-  }
-  // @Post('/create')
-  // createProfile(@Param('name') name: string): Observable<any> {
-  //   return this.appService.createProfile(name);
-  // }
-
-  // @MessagePattern({ role: 'item', cmd: 'get-by-id' })
-  // getItemById(id: number) {
-  //   return this.appService.getItemById(id);
-  // }
 }

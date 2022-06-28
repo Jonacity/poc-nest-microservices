@@ -1,29 +1,29 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
-import { ProfileInterface } from './interface.profile';
+import { ProfileInterface, ProfileParams } from './interface.profile';
 
 @Controller()
 export class AppController {
   constructor(private appService: AppService) {}
 
-  @MessagePattern({ cmd: 'hello' })
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @MessagePattern({ cmd: 'sum' })
-  accumulate(data: number[]): number {
-    return this.appService.accumulate(data);
-  }
-
-  @MessagePattern({ cmd: 'get_profiles' })
-  getProfiles(): ProfileInterface[] {
-    return this.appService.getProfiles();
+  @MessagePattern({ cmd: 'home' })
+  getHome(): string {
+    return this.appService.getHome();
   }
 
   @MessagePattern({ cmd: 'create_profile' })
-  async createProfile(): Promise<ProfileInterface> {
-    return this.appService.createProfile();
+  async createProfile(profileParams: ProfileParams): Promise<ProfileInterface> {
+    return this.appService.createProfile(profileParams);
+  }
+
+  @MessagePattern({ cmd: 'get_profile_by_id' })
+  async getProfile(id: number): Promise<ProfileInterface> {
+    return this.appService.getProfile(id);
+  }
+
+  @MessagePattern({ cmd: 'get_profiles' })
+  async getProfiles(): Promise<ProfileInterface[]> {
+    return this.appService.getProfiles();
   }
 }
